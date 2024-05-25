@@ -23,7 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.Dialog
+import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
+@Serializable
+object SetupScreen
 
 @Composable
 fun SetupScreenWrapper(

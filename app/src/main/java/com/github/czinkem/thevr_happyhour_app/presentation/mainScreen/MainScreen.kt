@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -17,12 +19,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -40,6 +44,13 @@ fun MainScreenWrapper(
     viewModel: MainScreenViewModel = koinViewModel()
 ) {
     val happyHours by viewModel.happyHours.collectAsStateWithLifecycle()
+    LaunchedEffect(
+        key1 = Unit,
+        block = {
+            viewModel.initHappyHours()
+        }
+    )
+
     MainScreen(
         modifier = modifier,
         onSettingsIconClick = {  },
@@ -62,6 +73,7 @@ fun MainScreen(
     var isSearchDialogShows by rememberSaveable {
         mutableStateOf(false)
     }
+
     Surface(
         modifier = modifier
     ) {
@@ -90,7 +102,10 @@ fun MainScreen(
                 ) {
                     items(happyHours) {
                         HappyHourCard(
-                            modifier = Modifier,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .padding(bottom = 8.dp),
                             happyHour = it,
                             onCardClick = { onHappyHoursClick(it) }
                         )
@@ -98,7 +113,7 @@ fun MainScreen(
                 }
 
                 FloatingActionButton(
-                    modifier = Modifier.align(Alignment.BottomEnd),
+                    modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
                     onClick = { isSearchDialogShows = true}
                 ) {
                     Icon(imageVector = Icons.Default.Search, contentDescription = null)
