@@ -56,7 +56,11 @@ fun MainScreenWrapper(
         onSettingsIconClick = {  },
         happyHours = happyHours,
         onHappyHoursClick ={
-            navController.navigate(HappyHourDetailScreen(it.title))
+            navController.navigate(
+                HappyHourDetailScreen(
+                    it.serialNumber
+                )
+            )
         }
     )
 }

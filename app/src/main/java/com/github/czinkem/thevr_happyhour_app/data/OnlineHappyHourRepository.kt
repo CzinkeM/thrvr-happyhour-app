@@ -5,4 +5,8 @@ class OnlineHappyHourRepository(private val api: HappyHourApi): IHappyHourReposi
     override fun getAll(): List<HappyHourDto> {
         return api.getAll()
     }
+
+    override fun getBySerialNumber(serialNumber: Int): HappyHourDto? {
+        TODO("Not yet implemented")
+    }
 }

@@ -35,7 +35,7 @@ fun App() {
                 val screen = it.toRoute<HappyHourDetailScreen>()
                 HappyHourDetailScreenWrapper(
                     modifier = Modifier.fillMaxSize(),
-                    happyHour = screen.title,
+                    happyHourSerialNumber = screen.serialNumber,
                     navController = navController,
                 )
             }

@@ -7,4 +7,9 @@ class OfflineHappyHourRepository(private val cache: LocalDataCache): IHappyHourR
         val happyHours = Gson().fromJson(cache.json(), Array<HappyHourDto>::class.java )
         return happyHours.toList()
     }
+
+    override fun getBySerialNumber(serialNumber: Int): HappyHourDto? {
+        return Gson().fromJson(cache.json(), Array<HappyHourDto>::class.java)
+            .firstOrNull { it.serialNumber.toInt() == serialNumber }
+    }
 }

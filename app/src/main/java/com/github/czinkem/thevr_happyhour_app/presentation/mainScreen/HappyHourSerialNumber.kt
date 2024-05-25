@@ -16,6 +16,7 @@ fun HappyHourSerialNumber(
     modifier: Modifier = Modifier,
     serialNumber: Int
 ) {
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
