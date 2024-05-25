@@ -1,6 +1,10 @@
 package com.github.czinkem.thevr_happyhour_app.data
 
-class OfflineHappyHourRepository: IHappyHourRepository {
+import com.google.gson.Gson
+
+class OfflineHappyHourRepository(private val cache: LocalDataCache): IHappyHourRepository {
     override fun getAll(): List<HappyHourDto> {
+        val happyHours = Gson().fromJson(cache.json(), Array<HappyHourDto>::class.java )
+        return happyHours.toList()
     }
 }
