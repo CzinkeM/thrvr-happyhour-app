@@ -6,6 +6,8 @@ import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.LocalDataCache
 import com.github.czinkem.thevr_happyhour_app.data.OfflineHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.OnlineHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetailViewModel
+import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreenViewModel
 import com.github.czinkem.thevr_happyhour_app.presentation.setupScreen.SetupScreenViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -43,6 +45,14 @@ object AppKoinModule {
 
         viewModel {
             SetupScreenViewModel()
+        }
+
+        viewModel {
+            MainScreenViewModel()
+        }
+
+        viewModel {
+            HappyHourDetailViewModel()
         }
     }
 }

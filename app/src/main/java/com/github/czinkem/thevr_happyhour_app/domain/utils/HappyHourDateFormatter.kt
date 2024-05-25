@@ -6,7 +6,11 @@ import java.time.format.DateTimeFormatter
 object HappyHourDateFormatter {
 
     private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    fun format(dateString: String): LocalDate {
+    fun formatString(dateString: String): LocalDate {
         return LocalDate.parse(dateString, dateFormatter)
+    }
+
+    fun formatLocalDate(date: LocalDate): String {
+        return date.format(dateFormatter)
     }
 }

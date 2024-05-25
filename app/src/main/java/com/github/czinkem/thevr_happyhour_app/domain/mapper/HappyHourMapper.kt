@@ -10,7 +10,7 @@ fun HappyHourDto.toHappyHour(): HappyHour {
     return HappyHour(
         title = this.title,
         url = this.url,
-        date = HappyHourDateFormatter.format(this.date),
+        date = HappyHourDateFormatter.formatString(this.date),
         serialNumber = this.serialNumber.toInt(),
         chapters = this.chapters.toHappyHourChapterList()
     )
