@@ -1,5 +1,6 @@
 package com.github.czinkem.thevr_happyhour_app.presentation.mainScreen
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,6 +20,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
+import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -65,7 +71,7 @@ fun MainScreenWrapper(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
@@ -87,37 +93,88 @@ fun MainScreen(
             }
         }
 
+        val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
         Column {
-            TopAppBar(
-                title = {
-                    Text(text = "Happy Hours")
-                },
-                actions = {
-                    IconButton(onClick = onSettingsIconClick) {
-                        Icon(imageVector = Icons.Default.Refresh, contentDescription =null)
+            AnimatedContent(targetState = navigator.currentDestination?.pane, label = "") { pane ->
+                when(pane) {
+                    ListDetailPaneScaffoldRole.Detail -> {
+                        val content = navigator.currentDestination?.content?.let { it as HappyHourState }
+                        TopAppBar(
+                            title = {
+                                Text(text = "${content?.serialNumber}")
+                            },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = {
+                                        navigator.navigateBack()
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                        contentDescription = null
+                                    )
+                                }
+                            },
+                            actions = {
+                                IconButton(onClick = onSettingsIconClick) {
+                                    Icon(imageVector = Icons.Default.Refresh, contentDescription =null)
+                                }
+                            }
+                        )
                     }
-                }
-            )
-            Box {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .align(Alignment.Center)
-                ) {
-                    items(happyHours) {
-                        HappyHourCard(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp)
-                                .padding(bottom = 8.dp),
-                            happyHour = it,
-                            onCardClick = { onHappyHoursClick(it) }
+                    else -> {
+                        TopAppBar(
+                            title = {
+                                Text(text = "Happy Hours")
+                            },
+                            actions = {
+                                IconButton(onClick = onSettingsIconClick) {
+                                    Icon(imageVector = Icons.Default.Refresh, contentDescription =null)
+                                }
+                            }
                         )
                     }
                 }
+            }
 
+            Box(modifier = Modifier.fillMaxWidth()) {
+                NavigableListDetailPaneScaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    navigator = navigator,
+                    listPane = {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            items(happyHours) {
+                                HappyHourCard(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 16.dp)
+                                        .padding(bottom = 8.dp),
+                                    happyHour = it,
+                                    onCardClick = {
+                                        navigator.navigateTo(
+                                            pane = ListDetailPaneScaffoldRole.Detail,
+                                            content = it
+                                        )
+//                                        onHappyHoursClick(it)
+                                    }
+                                )
+                            }
+                        }
+                    },
+                    detailPane = {
+                        val content = navigator.currentDestination?.content?.let { it as HappyHourState }
+                        if (content != null) {
+                            Text(text = "Selected happy hour: ${content.toString()}")
+                        }
+                    }
+                )
                 FloatingActionButton(
-                    modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp),
                     onClick = { isSearchDialogShows = true}
                 ) {
                     Icon(imageVector = Icons.Default.Search, contentDescription = null)

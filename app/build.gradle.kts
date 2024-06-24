@@ -82,4 +82,10 @@ dependencies {
 
     implementation("androidx.compose.material:material-icons-extended:1.6.7")
     implementation("com.airbnb.android:lottie-compose:6.0.0")
+
+    //ListDetail
+    implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.0.0-beta03")
+    implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha07")
+
+
 }
