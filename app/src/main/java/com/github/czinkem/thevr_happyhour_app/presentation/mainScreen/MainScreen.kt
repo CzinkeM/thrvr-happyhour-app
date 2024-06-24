@@ -93,7 +93,7 @@ fun MainScreen(
                         val content = navigator.currentDestination?.content?.let { it as HappyHourState }
                         TopAppBar(
                             title = {
-                                Text(text = "${content?.serialNumber}")
+                                Text(text = "HappyHour - ${content?.serialNumber}")
                             },
                             navigationIcon = {
                                 IconButton(
@@ -107,11 +107,6 @@ fun MainScreen(
                                     )
                                 }
                             },
-                            actions = {
-                                IconButton(onClick = onSettingsIconClick) {
-                                    Icon(imageVector = Icons.Default.Refresh, contentDescription =null)
-                                }
-                            }
                         )
                     }
                     else -> {
