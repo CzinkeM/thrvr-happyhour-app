@@ -9,7 +9,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
 import com.github.czinkem.thevr_happyhour_app.domain.utils.ThumbnailProvider
 import com.github.czinkem.thevr_happyhour_app.presentation.components.ChapterCard
@@ -22,7 +24,7 @@ fun HappyHourDetail(
     happyHour: HappyHourState,
 ) {
     Surface(
-        modifier = modifier
+        modifier = modifier,
     ) {
         LazyColumn(
             modifier = Modifier
@@ -31,11 +33,12 @@ fun HappyHourDetail(
             item {
                 Column {
                     GlideImage(
+                        modifier = Modifier,
                         imageModel = {
                             ThumbnailProvider.thumbnailUrl(happyHour.url)
                         },
                         imageOptions = ImageOptions(
-                            contentScale = ContentScale.FillWidth,
+                            contentScale = ContentScale.Fit,
                             alignment = Alignment.Center,
                         )
                     )

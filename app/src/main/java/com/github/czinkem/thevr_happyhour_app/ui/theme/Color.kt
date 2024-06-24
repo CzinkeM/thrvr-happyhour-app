@@ -2,14 +2,7 @@ package com.github.czinkem.thevr_happyhour_app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+val happyHourBlack = Color(0xFF211E24)
+val happyHourGray = Color(0xFFD8CDDB)
+val happyHourBrown = Color(0xFFB86B46)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-val BrownOrange = Color(0xFF8a5123)
-val Orange = Color(0xFFd67d36)
-val Gray = Color(0xFF212529)

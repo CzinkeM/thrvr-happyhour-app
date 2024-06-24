@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +19,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.github.czinkem.thevr_happyhour_app.ui.theme.happyHourBlack
+import com.github.czinkem.thevr_happyhour_app.ui.theme.happyHourGray
 
 @Composable
 fun HappyHourDateCard(
@@ -27,6 +30,12 @@ fun HappyHourDateCard(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
+        colors = CardColors(
+            containerColor = happyHourBlack,
+            contentColor = happyHourGray,
+            disabledContainerColor = happyHourBlack,
+            disabledContentColor = happyHourGray,
+        )
     ) {
         Row {
             Icon(
