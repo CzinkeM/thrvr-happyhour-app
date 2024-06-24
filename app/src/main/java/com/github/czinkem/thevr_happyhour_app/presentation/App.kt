@@ -7,9 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetailScreen
-import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetailScreenWrapper
 import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreen
 import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreenWrapper
 
@@ -28,14 +25,6 @@ fun App() {
             composable<MainScreen> {
                 MainScreenWrapper(
                     modifier = Modifier.fillMaxSize(),
-                    navController = navController,
-                )
-            }
-            composable<HappyHourDetailScreen> {
-                val screen = it.toRoute<HappyHourDetailScreen>()
-                HappyHourDetailScreenWrapper(
-                    modifier = Modifier.fillMaxSize(),
-                    happyHourSerialNumber = screen.serialNumber,
                     navController = navController,
                 )
             }

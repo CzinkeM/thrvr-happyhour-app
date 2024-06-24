@@ -1,0 +1,40 @@
+package com.github.czinkem.thevr_happyhour_app.presentation.components
+
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.VideoLibrary
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourChapterState
+
+@Composable
+fun ChapterCard(
+    modifier: Modifier = Modifier,
+    chapterState: HappyHourChapterState,
+) {
+    val context = LocalContext.current
+
+    Card(
+        modifier = modifier,
+        onClick = {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(chapterState.url))
+            context.startActivity(intent)
+        }
+    ) {
+        Row {
+            Icon(imageVector = Icons.Default.VideoLibrary, contentDescription = null)
+            Spacer(modifier = Modifier.size(16.dp))
+            Text(text = chapterState.title)
+        }
+    }
+
+}

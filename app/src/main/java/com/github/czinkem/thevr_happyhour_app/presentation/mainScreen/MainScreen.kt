@@ -37,7 +37,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
-import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetailScreen
+import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetail
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -61,13 +61,6 @@ fun MainScreenWrapper(
         modifier = modifier,
         onSettingsIconClick = {  },
         happyHours = happyHours,
-        onHappyHoursClick ={
-            navController.navigate(
-                HappyHourDetailScreen(
-                    it.serialNumber
-                )
-            )
-        }
     )
 }
 
@@ -77,7 +70,6 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     onSettingsIconClick: () -> Unit,
     happyHours: List<HappyHourState>,
-    onHappyHoursClick: (HappyHourState) -> Unit,
 ) {
 
     var isSearchDialogShows by rememberSaveable {
@@ -137,11 +129,11 @@ fun MainScreen(
                 }
             }
 
-            Box(modifier = Modifier.fillMaxWidth()) {
-                NavigableListDetailPaneScaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    navigator = navigator,
-                    listPane = {
+            NavigableListDetailPaneScaffold(
+                modifier = Modifier.fillMaxSize(),
+                navigator = navigator,
+                listPane = {
+                    Box(modifier = Modifier.fillMaxSize()) {
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -158,28 +150,30 @@ fun MainScreen(
                                             pane = ListDetailPaneScaffoldRole.Detail,
                                             content = it
                                         )
-//                                        onHappyHoursClick(it)
                                     }
                                 )
                             }
                         }
-                    },
-                    detailPane = {
-                        val content = navigator.currentDestination?.content?.let { it as HappyHourState }
-                        if (content != null) {
-                            Text(text = "Selected happy hour: ${content.toString()}")
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(16.dp),
+                            onClick = { isSearchDialogShows = true}
+                        ) {
+                            Icon(imageVector = Icons.Default.Search, contentDescription = null)
                         }
                     }
-                )
-                FloatingActionButton(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(16.dp),
-                    onClick = { isSearchDialogShows = true}
-                ) {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = null)
+                },
+                detailPane = {
+                    val content = navigator.currentDestination?.content?.let { it as HappyHourState }
+                    if (content != null) {
+                        HappyHourDetail(
+                            modifier = Modifier.fillMaxSize(),
+                            happyHour = content,
+                        )
+                    }
                 }
-            }
+            )
         }
     }
 }
