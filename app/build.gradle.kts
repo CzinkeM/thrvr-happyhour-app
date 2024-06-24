@@ -86,6 +86,7 @@ dependencies {
     //ListDetail
     implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.0.0-beta03")
     implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.0.0-alpha07")
-
+    //Landscapist - Async Imageloading
+    implementation("com.github.skydoves:landscapist-glide:2.3.2")
 
 }
