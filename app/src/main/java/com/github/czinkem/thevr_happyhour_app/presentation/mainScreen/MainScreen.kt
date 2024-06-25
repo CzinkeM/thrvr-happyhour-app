@@ -2,20 +2,12 @@ package com.github.czinkem.thevr_happyhour_app.presentation.mainScreen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -31,18 +23,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.github.czinkem.thevr_happyhour_app.R
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
 import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetail
 import kotlinx.serialization.Serializable
@@ -88,7 +72,7 @@ fun MainScreen(
     ) {
         AnimatedVisibility(visible = isSearchDialogShows) {
             Dialog(onDismissRequest = { isSearchDialogShows = false }) {
-                Text(text = "Ez a seatch dialog")
+                Text(text = "Ez a search dialog")
             }
         }
 
@@ -135,45 +119,19 @@ fun MainScreen(
                 modifier = Modifier.fillMaxSize(),
                 navigator = navigator,
                 listPane = {
-                    // TODO: Create a separated composable for this
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        Image(
-                            modifier = Modifier.align(Alignment.Center).fillMaxSize().blur(4.dp),
-                            painter = painterResource(id = R.drawable.topo),
-                            contentDescription = null,
-                            contentScale = ContentScale.FillBounds,
-                            alignment = Alignment.Center,
-                            colorFilter = ColorFilter.tint(Color.White)
-                        )
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            items(happyHours) {
-                                HappyHourCard(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 16.dp)
-                                        .padding(bottom = 8.dp),
-                                    happyHour = it,
-                                    onCardClick = {
-                                        navigator.navigateTo(
-                                            pane = ListDetailPaneScaffoldRole.Detail,
-                                            content = it
-                                        )
-                                    }
-                                )
-                            }
+                    HappyHourList(
+                        modifier = Modifier.fillMaxSize(),
+                        happyHours = happyHours,
+                        onHappyHourCardClick = { happyHour ->
+                            navigator.navigateTo(
+                                pane = ListDetailPaneScaffoldRole.Detail,
+                                content = happyHour
+                            )
+                        },
+                        onFloatingActionButtonClick = {
+                            isSearchDialogShows = true
                         }
-                        FloatingActionButton(
-                            modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(16.dp),
-                            onClick = { isSearchDialogShows = true},
-                        ) {
-                            Icon(imageVector = Icons.Default.Search, contentDescription = null)
-                        }
-                    }
+                    )
                 },
                 detailPane = {
                     val content = navigator.currentDestination?.content?.let { it as HappyHourState }
