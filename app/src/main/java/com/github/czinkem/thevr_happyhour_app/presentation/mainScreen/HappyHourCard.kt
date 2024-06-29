@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
 import com.github.czinkem.thevr_happyhour_app.ui.theme.happyHourBlack
-import com.github.czinkem.thevr_happyhour_app.ui.theme.happyHourBrown
 import com.github.czinkem.thevr_happyhour_app.ui.theme.happyHourGray
 
 @Composable
@@ -27,7 +26,7 @@ fun HappyHourCard(
         modifier = modifier,
         onClick = onCardClick,
         colors = CardColors(
-            containerColor = happyHourGray.copy(0.8f),
+            containerColor = happyHourGray.copy(0.65f),
             contentColor = happyHourBlack,
             disabledContainerColor = happyHourGray.copy(0.8f),
             disabledContentColor = happyHourBlack,

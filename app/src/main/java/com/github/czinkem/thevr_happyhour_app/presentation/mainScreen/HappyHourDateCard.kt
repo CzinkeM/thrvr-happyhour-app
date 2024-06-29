@@ -9,14 +9,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.czinkem.thevr_happyhour_app.ui.theme.happyHourBlack
@@ -37,9 +35,11 @@ fun HappyHourDateCard(
             disabledContentColor = happyHourGray,
         )
     ) {
-        Row {
+        Row(
+            Modifier.padding(horizontal = 4.dp)
+        ) {
             Icon(
-                modifier = Modifier.scale(.9f),
+                modifier = Modifier.scale(.9f).align(CenterVertically),
                 imageVector = Icons.Default.CalendarMonth,
                 contentDescription = null,
             )
