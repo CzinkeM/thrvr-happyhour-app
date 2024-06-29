@@ -12,7 +12,7 @@ import androidx.core.view.WindowCompat
 private val darkColorScheme = darkColorScheme(
     primary = happyHourGray,
     secondary = happyHourBlack,
-    tertiary = happyHourBrown,
+    tertiary = happyHourPurple,
 )
 
 @Composable
