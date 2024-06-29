@@ -1,5 +1,6 @@
 package com.github.czinkem.thevr_happyhour_app.presentation.mainScreen
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +30,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.airbnb.lottie.compose.LottieAnimation
@@ -38,10 +38,12 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.github.czinkem.thevr_happyhour_app.R
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
+import com.github.czinkem.thevr_happyhour_app.presentation.components.HappyHourSearchDialog
 import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetail
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
+private const val TAG = "MainScreen"
 @Serializable
 object MainScreen
 @Composable
@@ -89,9 +91,17 @@ fun MainScreen(
         modifier = modifier,
     ) {
         AnimatedVisibility(visible = isSearchDialogShows) {
-            Dialog(onDismissRequest = { isSearchDialogShows = false }) {
-                Text(text = "Ez a search dialog")
-            }
+            HappyHourSearchDialog(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                lastHappyHourSerialNumber = happyHours.first().serialNumber,
+                onSearchClick = { type, value ->
+                    Log.d(TAG, "Search: $type - $value")
+                },
+                onDismiss = {
+                    isSearchDialogShows = false
+                }
+            )
         }
 
         val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
@@ -147,7 +157,7 @@ fun MainScreen(
                         LaunchedEffect(
                             key1 = progress,
                             block = {
-                                onAnimationProgressChange(progress > 0.5f)
+                                onAnimationProgressChange(progress > 0.43f)
                             }
                         )
                         Column(
