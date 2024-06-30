@@ -19,6 +19,8 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +51,7 @@ object MainScreen
 fun MainScreenWrapper(
     modifier: Modifier = Modifier,
     navController: NavController,
+    windowSizeClass: WindowSizeClass,
     viewModel: MainScreenViewModel = koinViewModel()
 ) {
     val happyHours by viewModel.displayedHappyHours.collectAsStateWithLifecycle()
@@ -65,6 +68,7 @@ fun MainScreenWrapper(
 
     MainScreen(
         modifier = modifier,
+        windowSizeClass = windowSizeClass,
         onSettingsIconClick = {  },
         happyHours = happyHours,
         isHappyHoursLoading = isHappyHoursLoading,
@@ -81,6 +85,7 @@ fun MainScreenWrapper(
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
+    windowSizeClass: WindowSizeClass,
     onSettingsIconClick: () -> Unit,
     happyHours: List<HappyHourState>,
     isHappyHoursLoading: Boolean,
@@ -114,41 +119,54 @@ fun MainScreen(
 
         val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
         Column {
-            AnimatedContent(targetState = navigator.currentDestination?.pane, label = "") { pane ->
-                when(pane) {
-                    ListDetailPaneScaffoldRole.Detail -> {
-                        val content = navigator.currentDestination?.content?.let { it as HappyHourState }
-                        TopAppBar(
-                            title = {
-                                Text(text = "HappyHour - ${content?.serialNumber}")
-                            },
-                            navigationIcon = {
-                                IconButton(
-                                    onClick = {
-                                        navigator.navigateBack()
+            if(windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
+                AnimatedContent(targetState = navigator.currentDestination?.pane, label = "") { pane ->
+                    when(pane) {
+                        ListDetailPaneScaffoldRole.Detail -> {
+                            val content = navigator.currentDestination?.content?.let { it as HappyHourState }
+                            TopAppBar(
+                                title = {
+                                    Text(text = "HappyHour - ${content?.serialNumber}")
+                                },
+                                navigationIcon = {
+                                    IconButton(
+                                        onClick = {
+                                            navigator.navigateBack()
+                                        }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                            contentDescription = null
+                                        )
                                     }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                        contentDescription = null
-                                    )
+                                },
+                            )
+                        }
+                        else -> {
+                            TopAppBar(
+                                title = {
+                                    Text(text = "Happy Hours")
+                                },
+                                actions = {
+                                    IconButton(onClick = onSettingsIconClick) {
+                                        Icon(imageVector = Icons.Default.Refresh, contentDescription =null)
+                                    }
                                 }
-                            },
-                        )
-                    }
-                    else -> {
-                        TopAppBar(
-                            title = {
-                                Text(text = "Happy Hours")
-                            },
-                            actions = {
-                                IconButton(onClick = onSettingsIconClick) {
-                                    Icon(imageVector = Icons.Default.Refresh, contentDescription =null)
-                                }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
+            }else {
+                TopAppBar(
+                    title = {
+                        Text(text = "Happy Hours")
+                    },
+                    actions = {
+                        IconButton(onClick = onSettingsIconClick) {
+                            Icon(imageVector = Icons.Default.Refresh, contentDescription =null)
+                        }
+                    }
+                )
             }
 
             AnimatedContent(

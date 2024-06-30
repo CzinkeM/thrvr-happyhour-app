@@ -92,4 +92,7 @@ dependencies {
 
     //Lottie
     implementation("com.airbnb.android:lottie-compose:6.4.1")
+
+    implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
+
 }

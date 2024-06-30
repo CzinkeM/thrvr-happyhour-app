@@ -2,6 +2,7 @@ package com.github.czinkem.thevr_happyhour_app.presentation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -11,7 +12,7 @@ import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreen
 import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreenWrapper
 
 @Composable
-fun App() {
+fun App(windowSizeClass: WindowSizeClass) {
     Surface(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -26,6 +27,7 @@ fun App() {
                 MainScreenWrapper(
                     modifier = Modifier.fillMaxSize(),
                     navController = navController,
+                    windowSizeClass = windowSizeClass
                 )
             }
         }
