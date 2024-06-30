@@ -11,6 +11,8 @@ import org.koin.core.qualifier.named
 object GetAllHappyHourUseCase: KoinComponent {
     private val repository  by inject<IHappyHourRepository>(named(AppKoinModule.REPOSITORY_OFFLINE_NAME))
     operator fun invoke(): List<HappyHour> {
-        return repository.getAll().toHappyHourList()
+        val happyHourList = repository.getAll().toHappyHourList()
+        CacheHappyHourForSearchUseCase(happyHourList)
+        return happyHourList
     }
 }

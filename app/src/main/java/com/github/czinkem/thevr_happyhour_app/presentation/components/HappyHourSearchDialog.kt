@@ -68,8 +68,12 @@ fun HappyHourSearchDialog(
 
     val isSearchButtonEnabled by remember {
          derivedStateOf {
-             searchType != null
-                     && (searchType == SearchType.NUMBER && isSearchByNumberValid)
+             when(searchType) {
+                 null -> false
+                 SearchType.TEXT -> true
+                 SearchType.NUMBER -> isSearchByNumberValid
+                 SearchType.DATE -> false
+             }
          }
     }
 

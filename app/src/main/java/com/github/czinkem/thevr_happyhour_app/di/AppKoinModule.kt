@@ -2,6 +2,7 @@ package com.github.czinkem.thevr_happyhour_app.di
 
 import com.github.czinkem.thevr_happyhour_app.data.DataSources
 import com.github.czinkem.thevr_happyhour_app.data.HappyHourApi
+import com.github.czinkem.thevr_happyhour_app.data.HappyHourStringSearchCache
 import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.LocalDataCache
 import com.github.czinkem.thevr_happyhour_app.data.OfflineHappyHourRepository
@@ -36,8 +37,12 @@ object AppKoinModule {
                 .create(HappyHourApi::class.java)
         }
 
+        single {
+            HappyHourStringSearchCache()
+        }
+
         viewModel {
-            MainScreenViewModel()
+            MainScreenViewModel(get())
         }
 
         viewModel {

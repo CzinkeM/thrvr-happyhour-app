@@ -1,6 +1,5 @@
 package com.github.czinkem.thevr_happyhour_app.presentation.mainScreen
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -38,12 +37,12 @@ import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.github.czinkem.thevr_happyhour_app.R
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
+import com.github.czinkem.thevr_happyhour_app.domain.state.SearchType
 import com.github.czinkem.thevr_happyhour_app.presentation.components.HappyHourSearchDialog
 import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetail
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
-private const val TAG = "MainScreen"
 @Serializable
 object MainScreen
 @Composable
@@ -52,13 +51,15 @@ fun MainScreenWrapper(
     navController: NavController,
     viewModel: MainScreenViewModel = koinViewModel()
 ) {
-    val happyHours by viewModel.happyHours.collectAsStateWithLifecycle()
+    val happyHours by viewModel.displayedHappyHours.collectAsStateWithLifecycle()
     val isHappyHoursLoading by viewModel.happyHoursLoading.collectAsStateWithLifecycle()
+    val isHappyHoursListFiltered by viewModel.isHappyHoursFiltered.collectAsStateWithLifecycle()
 
     LaunchedEffect(
         key1 = Unit,
         block = {
             viewModel.initHappyHours()
+            viewModel.showAllHappyHour()
         }
     )
 
@@ -70,6 +71,9 @@ fun MainScreenWrapper(
         onAnimationProgressChange = { isCompleted ->
             viewModel.onAnimationProgressChange(isCompleted)
         },
+        onSearchClick = viewModel::search,
+        isListFiltered = isHappyHoursListFiltered,
+        onClearFilterButtonClick = viewModel::showAllHappyHour
     )
 }
 
@@ -81,6 +85,9 @@ fun MainScreen(
     happyHours: List<HappyHourState>,
     isHappyHoursLoading: Boolean,
     onAnimationProgressChange: (isCompleted: Boolean) -> Unit,
+    onSearchClick: (searchType: SearchType, searchedValue: String) -> Unit,
+    isListFiltered: Boolean,
+    onClearFilterButtonClick: () -> Unit,
 ) {
 
     var isSearchDialogShows by rememberSaveable {
@@ -96,7 +103,8 @@ fun MainScreen(
                     .fillMaxWidth(),
                 lastHappyHourSerialNumber = happyHours.first().serialNumber,
                 onSearchClick = { type, value ->
-                    Log.d(TAG, "Search: $type - $value")
+                    onSearchClick(type, value)
+                    isSearchDialogShows = false
                 },
                 onDismiss = {
                     isSearchDialogShows = false
@@ -142,8 +150,6 @@ fun MainScreen(
                     }
                 }
             }
-
-
 
             AnimatedContent(
                 targetState = isHappyHoursLoading,
@@ -198,7 +204,9 @@ fun MainScreen(
                                     },
                                     onFloatingActionButtonClick = {
                                         isSearchDialogShows = true
-                                    }
+                                    },
+                                    isListFiltered = isListFiltered,
+                                    onClearFilterClick = onClearFilterButtonClick
                                 )
 
                             },
@@ -212,7 +220,6 @@ fun MainScreen(
                                 }
                             }
                         )
-
                     }
                 }
             }
