@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="happyHourBlack">#FF211E24</color>
+    <color name="happyHourGray">#FFD8CDDB</color>
 </resources>

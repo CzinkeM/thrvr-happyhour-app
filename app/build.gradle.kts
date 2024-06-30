@@ -92,7 +92,8 @@ dependencies {
 
     //Lottie
     implementation("com.airbnb.android:lottie-compose:6.4.1")
-
+    //Windowsize class
     implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
-
+    //Splash screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

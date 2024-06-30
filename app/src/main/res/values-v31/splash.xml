@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.TheVRHappyHourApp.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/happyHourBlack</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/coffee_logo</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/happyhour_browser_branding</item>
+        <item name="postSplashScreenTheme">@style/Theme.TheVRHappyHourApp</item>
+    </style>
+</resources>

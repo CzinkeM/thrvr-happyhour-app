@@ -19,7 +19,6 @@ import kotlin.system.measureTimeMillis
 class MainScreenViewModel(
     private val stringSearchCache: HappyHourStringSearchCache
 ): ViewModel() {
-
     private val _happyHours = MutableStateFlow(listOf<HappyHourState>())
 
     private val _displayedHappyHours = MutableStateFlow(listOf<HappyHourState>())

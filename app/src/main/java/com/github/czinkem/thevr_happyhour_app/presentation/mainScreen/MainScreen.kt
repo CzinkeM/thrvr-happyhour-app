@@ -126,6 +126,7 @@ fun MainScreen(
                             val content = navigator.currentDestination?.content?.let { it as HappyHourState }
                             TopAppBar(
                                 title = {
+                                    // TODO: remove magic strings
                                     Text(text = "HappyHour - ${content?.serialNumber}")
                                 },
                                 navigationIcon = {
@@ -197,7 +198,7 @@ fun MainScreen(
                             AnimatedVisibility(visible = progress > 0.01) {
                                 Text(
                                     modifier = Modifier.fillMaxWidth(),
-                                    text = "Happy Hour",
+                                    text = "Loading Happy Hours",
                                     textAlign = TextAlign.Center,
                                     fontSize = 32.sp,
                                 )

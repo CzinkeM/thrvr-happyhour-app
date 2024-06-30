@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.github.czinkem.thevr_happyhour_app.presentation.App
 import com.github.czinkem.thevr_happyhour_app.ui.theme.TheVRHappyHourAppTheme
 
@@ -12,6 +13,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         setContent {
             TheVRHappyHourAppTheme {
                 val sizeClass = calculateWindowSizeClass(activity = this)
