@@ -1,7 +1,7 @@
 package com.github.czinkem.thevr_happyhour_app.domain.mapper
 
-import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourDto
-import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourVideoDto
+import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourDto
+import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
 import com.github.czinkem.thevr_happyhour_app.domain.model.HappyHour
 import com.github.czinkem.thevr_happyhour_app.domain.model.HappyHourChapter
 import com.github.czinkem.thevr_happyhour_app.domain.utils.HappyHourDateFormatter

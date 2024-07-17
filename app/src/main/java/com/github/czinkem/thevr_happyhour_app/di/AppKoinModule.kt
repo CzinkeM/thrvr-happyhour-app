@@ -1,13 +1,11 @@
 package com.github.czinkem.thevr_happyhour_app.di
 
-import com.github.czinkem.thevr_happyhour_app.data.HappyHourApi
+import com.github.czinkem.thevr_happyhour_app.data.online.HappyHourApi
 import com.github.czinkem.thevr_happyhour_app.data.HappyHourVideoSearchCache
-import com.github.czinkem.thevr_happyhour_app.data.HttpRoutes
+import com.github.czinkem.thevr_happyhour_app.data.online.HttpRoutes
 import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.LocalDataCache
-import com.github.czinkem.thevr_happyhour_app.data.OfflineHappyHourRepository
-import com.github.czinkem.thevr_happyhour_app.data.OnlineHappyHourRepository
-import com.github.czinkem.thevr_happyhour_app.data.SearchCache
+import com.github.czinkem.thevr_happyhour_app.data.online.OnlineHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetailViewModel
 import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreenViewModel
 import org.koin.android.ext.koin.androidApplication

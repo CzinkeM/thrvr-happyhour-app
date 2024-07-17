@@ -1,4 +1,4 @@
-package com.github.czinkem.thevr_happyhour_app.data.dto
+package com.github.czinkem.thevr_happyhour_app.data.online.dto
 
 import com.google.gson.annotations.SerializedName
 

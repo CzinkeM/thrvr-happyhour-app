@@ -1,14 +1,12 @@
-package com.github.czinkem.thevr_happyhour_app.data
+package com.github.czinkem.thevr_happyhour_app.data.online
 
 import android.util.Log
-import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourDto
-import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourVideoDto
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.flow.Flow
+import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.data.SearchCache
+import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourDto
+import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.update
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -43,7 +41,6 @@ class OnlineHappyHourRepository(
                 return happyHourDto
             } ?: throw NullPointerException()
         }else {
-            Log.d(TAG, "onResponse response not succesfull")
             throw HttpException(response)
         }
     }
@@ -71,13 +68,10 @@ class OnlineHappyHourRepository(
             } else {
                 targetPage = dto.page.toString()
                 hhList.addAll(dto.hhVideos)
-                Log.d(TAG, "loadAllHappyHour: add $dto")
             }
         }
-        val asd = hhList
         cache.cache(hhList)
         happyHours.update { hhList }
-        val asdasd = happyHours.value
     }
 
     fun loadNextPage() {

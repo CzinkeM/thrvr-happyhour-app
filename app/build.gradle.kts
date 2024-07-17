@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -96,4 +98,8 @@ dependencies {
     implementation("androidx.compose.material3:material3-window-size-class:1.2.0")
     //Splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    //RoomDb
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 }

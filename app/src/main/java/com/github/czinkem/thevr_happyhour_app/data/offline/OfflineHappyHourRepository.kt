@@ -1,8 +1,9 @@
-package com.github.czinkem.thevr_happyhour_app.data
+package com.github.czinkem.thevr_happyhour_app.data.offline
 
-import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourDto
-import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourVideoDto
-import com.google.gson.Gson
+import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.data.LocalDataCache
+import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourDto
+import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
 import kotlinx.coroutines.flow.StateFlow
 
 class OfflineHappyHourRepository(private val cache: LocalDataCache): IHappyHourRepository {

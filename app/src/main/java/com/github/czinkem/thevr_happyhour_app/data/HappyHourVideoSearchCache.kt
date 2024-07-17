@@ -1,6 +1,6 @@
 package com.github.czinkem.thevr_happyhour_app.data
 
-import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourVideoDto
+import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
 
 class HappyHourVideoSearchCache: SearchCache<HappyHourVideoDto> {
 

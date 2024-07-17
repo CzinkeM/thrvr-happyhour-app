@@ -3,8 +3,8 @@ package com.github.czinkem.thevr_happyhour_app.presentation.mainScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
-import com.github.czinkem.thevr_happyhour_app.data.OfflineHappyHourRepository
-import com.github.czinkem.thevr_happyhour_app.data.OnlineHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.data.offline.OfflineHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.data.online.OnlineHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.domain.mapper.toHappyHourList
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourChapterState
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
