@@ -2,29 +2,49 @@ package com.github.czinkem.thevr_happyhour_app.presentation.mainScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.czinkem.thevr_happyhour_app.data.HappyHourStringSearchCache
+import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.data.OfflineHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.data.OnlineHappyHourRepository
+import com.github.czinkem.thevr_happyhour_app.domain.mapper.toHappyHourList
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourChapterState
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourState
 import com.github.czinkem.thevr_happyhour_app.domain.state.SearchType
-import com.github.czinkem.thevr_happyhour_app.domain.usecase.GetAllHappyHourUseCase
 import com.github.czinkem.thevr_happyhour_app.domain.utils.HappyHourDateFormatter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.system.measureTimeMillis
+
 
 class MainScreenViewModel(
-    private val stringSearchCache: HappyHourStringSearchCache
+    private val repository: IHappyHourRepository
 ): ViewModel() {
-    private val _happyHours = MutableStateFlow(listOf<HappyHourState>())
+
+    private val _happyHours = repository.happyHours()
+        .map { happyHourVideoDtos ->
+            happyHourVideoDtos.toHappyHourList().map { hh ->
+                HappyHourState(
+                    title =  hh.title,
+                    videoId = hh.videoId,
+                    date = HappyHourDateFormatter.formatLocalDate(hh.date),
+                    serialNumber = hh.serialNumber,
+                    chapters = hh.chapters.map { chapter ->
+                        HappyHourChapterState(chapter.title,chapter.url)
+                    }
+                )
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     private val _displayedHappyHours = MutableStateFlow(listOf<HappyHourState>())
-    val displayedHappyHours = _displayedHappyHours.asStateFlow()
+    val displayedHappyHours = _happyHours
 
-    private val _happyHoursLoading = MutableStateFlow(true)
+    private val _happyHoursLoading = MutableStateFlow(false)
     val happyHoursLoading = _happyHoursLoading.asStateFlow()
 
     private val _animationCompleted = MutableStateFlow(false)
@@ -35,32 +55,10 @@ class MainScreenViewModel(
     private val _lastSearchedValue = MutableStateFlow("")
     val lastSearchedValue = _lastSearchedValue.asStateFlow()
 
-    fun initHappyHours() {
-        _happyHoursLoading.update { true }
-        measureTimeMillis {
-            _happyHours.update {
-                GetAllHappyHourUseCase
-                    .invoke()
-                    .map {
-                        HappyHourState(
-                            title =  it.title,
-                            url = it.url,
-                            date = HappyHourDateFormatter.formatLocalDate(it.date),
-                            serialNumber = it.serialNumber,
-                            chapters = it.chapters.map { chapter ->
-                                HappyHourChapterState(chapter.title,chapter.url)
-                            }
-                        )
-                    }
-            }
-        }
-        viewModelScope.launch {
-            if(!_animationCompleted.value) {
-                while (!_animationCompleted.value) {
-                    delay(100)
-                }
-            }
-            _happyHoursLoading.emit(false)
+    fun loadHappyHours() {
+        // TODO:  add loading animation
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.loadAllHappyHour()
         }
     }
 
@@ -78,13 +76,11 @@ class MainScreenViewModel(
             _lastSearchedValue.emit(searchedValue)
             _animationCompleted.emit(false)
             _happyHoursLoading.emit(true)
-            val resultSerialNumber = when(searchType) {
+            when(searchType) {
                 SearchType.TEXT -> searchString(searchedValue)
                 SearchType.NUMBER -> listOf(searchedValue.toInt())
                 SearchType.DATE -> TODO()
             }
-            val hhs = _happyHours.value.filter { happyHour -> happyHour.serialNumber in resultSerialNumber }
-            _displayedHappyHours.emit(hhs)
             _isHappyHoursFiltered.emit(true)
             if(!_animationCompleted.value) {
                 while (!_animationCompleted.value) {
@@ -94,7 +90,26 @@ class MainScreenViewModel(
             _happyHoursLoading.emit(false)
         }
     }
-    private fun searchString(searchedValue: String): List<Int> {
-        return stringSearchCache.search(searchedValue)
+    private fun searchString(searchedValue: String) {
+        when(repository) {
+            is OnlineHappyHourRepository -> {
+                val dtos = repository.getHappyHourByFreeText(searchedValue)
+                _displayedHappyHours.tryEmit(dtos.toHappyHourList().map { hh ->
+                    HappyHourState(
+                        title =  hh.title,
+                        videoId = hh.videoId,
+                        date = HappyHourDateFormatter.formatLocalDate(hh.date),
+                        serialNumber = hh.serialNumber,
+                        chapters = hh.chapters.map { chapter ->
+                            HappyHourChapterState(chapter.title,chapter.url)
+                        }
+                    )
+                })
+            }
+            is OfflineHappyHourRepository -> {
+
+            }
+            else -> throw IllegalStateException()
+        }
     }
 }

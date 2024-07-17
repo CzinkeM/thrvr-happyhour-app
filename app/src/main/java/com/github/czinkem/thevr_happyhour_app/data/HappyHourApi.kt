@@ -1,9 +1,14 @@
 package com.github.czinkem.thevr_happyhour_app.data
 
+import com.github.czinkem.thevr_happyhour_app.data.dto.HappyHourDto
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.GET
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface HappyHourApi {
-    @GET("/happy-hours/")
-    fun getAll(): Call<List<HappyHourDto>>
+    @POST(HttpRoutes.HAPPYHOURS)
+    fun getPage(
+        @Body request: RequestBody
+    ): Call<HappyHourDto>
 }

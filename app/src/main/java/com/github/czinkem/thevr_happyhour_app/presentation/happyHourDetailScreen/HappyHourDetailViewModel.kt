@@ -9,20 +9,20 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class HappyHourDetailViewModel: ViewModel() {
-    fun getHappyHourBySerialNumber(serialNumber: Int): HappyHourState? {
-        val hh = GetHappyHourBySerialNumberUseCase(serialNumber)
-        return if(hh != null) {
-            HappyHourState(
-                title = hh.title,
-                url = hh.url,
-                date = HappyHourDateFormatter.formatLocalDate(hh.date),
-                serialNumber = hh.serialNumber,
-                chapters = hh.chapters.map { HappyHourChapterState(it.title, it.url) }
-            )
-        } else {
-            null
-        }
-    }
+//    fun getHappyHourBySerialNumber(serialNumber: Int): HappyHourState? {
+//        val hh = GetHappyHourBySerialNumberUseCase(serialNumber)
+//        return if(hh != null) {
+//            HappyHourState(
+//                title = hh.title,
+//                url = hh.url,
+//                date = HappyHourDateFormatter.formatLocalDate(hh.date),
+//                serialNumber = hh.serialNumber,
+//                chapters = hh.chapters.map { HappyHourChapterState(it.title, it.url) }
+//            )
+//        } else {
+//            null
+//        }
+//    }
 
     private val _happyHours = MutableStateFlow(listOf<HappyHourState>())
     val happyHours = _happyHours.asStateFlow()

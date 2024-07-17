@@ -5,12 +5,13 @@ import java.time.format.DateTimeFormatter
 
 object HappyHourDateFormatter {
 
-    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    private val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss")
+    private val displayStringFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     fun formatString(dateString: String): LocalDate {
         return LocalDate.parse(dateString, dateFormatter)
     }
 
     fun formatLocalDate(date: LocalDate): String {
-        return date.format(dateFormatter)
+        return date.format(displayStringFormatter)
     }
 }

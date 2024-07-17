@@ -11,6 +11,7 @@ import org.koin.core.qualifier.named
 object GetHappyHourBySerialNumberUseCase: KoinComponent {
     private val repository  by inject<IHappyHourRepository>(named(AppKoinModule.REPOSITORY_OFFLINE_NAME))
     operator fun invoke(serialNumber: Int): HappyHour? {
-        return repository.getBySerialNumber(serialNumber)?.toHappyHour()
+//        return repository.getBySerialNumber(serialNumber)?.toHappyHour()
+        return null
     }
 }

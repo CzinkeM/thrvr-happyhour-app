@@ -61,8 +61,9 @@ fun MainScreenWrapper(
     LaunchedEffect(
         key1 = Unit,
         block = {
-            viewModel.initHappyHours()
-            viewModel.showAllHappyHour()
+            viewModel.loadHappyHours()
+//            viewModel.initHappyHours()
+//            viewModel.showAllHappyHour()
         }
     )
 
@@ -77,7 +78,7 @@ fun MainScreenWrapper(
         },
         onSearchClick = viewModel::search,
         isListFiltered = isHappyHoursListFiltered,
-        onClearFilterButtonClick = viewModel::showAllHappyHour
+        onClearFilterButtonClick = viewModel::showAllHappyHour,
     )
 }
 
@@ -225,7 +226,7 @@ fun MainScreen(
                                         isSearchDialogShows = true
                                     },
                                     isListFiltered = isListFiltered,
-                                    onClearFilterClick = onClearFilterButtonClick
+                                    onClearFilterClick = onClearFilterButtonClick,
                                 )
 
                             },
