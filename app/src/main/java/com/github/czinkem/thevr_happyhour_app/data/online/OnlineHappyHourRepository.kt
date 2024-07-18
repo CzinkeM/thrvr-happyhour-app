@@ -2,20 +2,28 @@ package com.github.czinkem.thevr_happyhour_app.data.online
 
 import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.SearchCache
+import com.github.czinkem.thevr_happyhour_app.data.offline.HappyHourDao
 import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourDto
 import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
+import com.github.czinkem.thevr_happyhour_app.domain.mapper.toHappyHourList
+import com.github.czinkem.thevr_happyhour_app.domain.model.HappyHour
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import okhttp3.MultipartBody
 import retrofit2.HttpException
 
 class OnlineHappyHourRepository(
     private val api: HappyHourApi,
-    private val cache: SearchCache<HappyHourVideoDto>
-): IHappyHourRepository {
+    private val searchCache: SearchCache<HappyHourVideoDto>,
+    private val dao: HappyHourDao,
+    ): IHappyHourRepository {
     var happyHours = MutableStateFlow<List<HappyHourVideoDto>>(emptyList())
-    override fun happyHours() = happyHours.asStateFlow()
+
+    override fun happyHours(): Flow<List<HappyHour>> {
+        return happyHours.map { it.toHappyHourList() }
+    }
 
     private fun loadPage(
         targetPage: String
@@ -36,7 +44,7 @@ class OnlineHappyHourRepository(
             throw HttpException(response)
         }
     }
-    override fun loadAllHappyHour() {
+    override suspend fun loadAllHappyHour() {
         // TODO: empty stringtől ("","0","8",..) indul és mindig adunk hozzá 8-t
         var targetPage = "0"
         var isMoreHappyHourAvailable = true
@@ -52,12 +60,15 @@ class OnlineHappyHourRepository(
                 hhList.addAll(dto.hhVideos)
             }
         }
-        cache.cache(hhList)
+        searchCache.cache(hhList)
+//        dao.upsertHappyHour(
+//            *hhList.toDatabaseEntityList().toTypedArray()
+//        )
         happyHours.update { hhList }
     }
 
     fun getHappyHourByFreeText(searchedString: String): List<HappyHourVideoDto> {
-        val searchResult = cache.search(searchedString)
+        val searchResult = searchCache.search(searchedString)
         return happyHours.value.filter { hh -> hh.id in searchResult }
     }
 }

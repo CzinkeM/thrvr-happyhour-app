@@ -12,7 +12,6 @@ data class HappyHourEntity(
     var part: Int,
     var title: String,
     var videoId: String,
-    var videoCoverImg: String,
-    var chapters: List<HappyHourChapterEntity>,
+    var chapterString: String,
     var publishedDate: String
 )

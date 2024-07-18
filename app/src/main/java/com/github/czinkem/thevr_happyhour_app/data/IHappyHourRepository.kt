@@ -1,12 +1,12 @@
 package com.github.czinkem.thevr_happyhour_app.data
 
-import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
-import kotlinx.coroutines.flow.StateFlow
+import com.github.czinkem.thevr_happyhour_app.domain.model.HappyHour
+import kotlinx.coroutines.flow.Flow
 
 interface IHappyHourRepository {
 
-    fun happyHours(): StateFlow<List<HappyHourVideoDto>>
+    fun happyHours(): Flow<List<HappyHour>>
 
-    fun loadAllHappyHour()
+    suspend fun loadAllHappyHour()
 
 }

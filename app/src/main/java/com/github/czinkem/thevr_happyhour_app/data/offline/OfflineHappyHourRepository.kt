@@ -1,31 +1,20 @@
 package com.github.czinkem.thevr_happyhour_app.data.offline
 
 import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
-import com.github.czinkem.thevr_happyhour_app.data.LocalDataCache
-import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourDto
-import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
-import kotlinx.coroutines.flow.StateFlow
+import com.github.czinkem.thevr_happyhour_app.domain.mapper.toModelList
+import com.github.czinkem.thevr_happyhour_app.domain.model.HappyHour
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class OfflineHappyHourRepository(private val cache: LocalDataCache): IHappyHourRepository {
+class OfflineHappyHourRepository(
+    private val dao: HappyHourDao
+): IHappyHourRepository {
 
-    fun getAll(): List<HappyHourDto> {
-        TODO()
-//        val happyHours = Gson().fromJson(cache.json(), Array<HappyHourDto>::class.java )
-//        return happyHours.toList()
+    override fun happyHours(): Flow<List<HappyHour>> {
+        return dao.getHappyHour().map { it.toModelList() }
     }
 
-    fun getBySerialNumber(serialNumber: Int): HappyHourDto? {
-        TODO()
-//        return null
-//        return Gson().fromJson(cache.json(), Array<HappyHourDto>::class.java)
-//            .firstOrNull { it.serialNumber.toInt() == serialNumber }
-    }
-
-    override fun happyHours(): StateFlow<List<HappyHourVideoDto>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun loadAllHappyHour() {
+    override suspend fun loadAllHappyHour() {
         TODO("Not yet implemented")
     }
 }

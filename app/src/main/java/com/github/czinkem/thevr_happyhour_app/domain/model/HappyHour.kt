@@ -6,6 +6,6 @@ data class HappyHour(
     val title: String,
     val videoId: String,
     val date: LocalDate,
-    val serialNumber: Int,
+    val part: Int,
     val chapters: List<HappyHourChapter>
 )

@@ -26,13 +26,13 @@ class MainScreenViewModel(
 ): ViewModel() {
 
     private val _happyHours = repository.happyHours()
-        .map { happyHourVideoDtos ->
-            happyHourVideoDtos.toHappyHourList().map { hh ->
+        .map { happyHours ->
+            happyHours.map { hh ->
                 HappyHourState(
                     title =  hh.title,
                     videoId = hh.videoId,
                     date = HappyHourDateFormatter.formatLocalDate(hh.date),
-                    serialNumber = hh.serialNumber,
+                    serialNumber = hh.part,
                     chapters = hh.chapters.map { chapter ->
                         HappyHourChapterState(
                             title = chapter.title,
@@ -103,7 +103,7 @@ class MainScreenViewModel(
                         title =  hh.title,
                         videoId = hh.videoId,
                         date = HappyHourDateFormatter.formatLocalDate(hh.date),
-                        serialNumber = hh.serialNumber,
+                        serialNumber = hh.part,
                         chapters = hh.chapters.map { chapter ->
                             HappyHourChapterState(
                                 title = chapter.title,

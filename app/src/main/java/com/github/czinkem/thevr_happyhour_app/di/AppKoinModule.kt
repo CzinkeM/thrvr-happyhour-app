@@ -1,10 +1,12 @@
 package com.github.czinkem.thevr_happyhour_app.di
 
-import com.github.czinkem.thevr_happyhour_app.data.online.HappyHourApi
+import androidx.room.Room
 import com.github.czinkem.thevr_happyhour_app.data.HappyHourVideoSearchCache
-import com.github.czinkem.thevr_happyhour_app.data.online.HttpRoutes
 import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.LocalDataCache
+import com.github.czinkem.thevr_happyhour_app.data.offline.HappyHourDatabase
+import com.github.czinkem.thevr_happyhour_app.data.online.HappyHourApi
+import com.github.czinkem.thevr_happyhour_app.data.online.HttpRoutes
 import com.github.czinkem.thevr_happyhour_app.data.online.OnlineHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen.HappyHourDetailViewModel
 import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreenViewModel
@@ -26,14 +28,23 @@ object AppKoinModule {
             LocalDataCache(androidApplication())
         }
 
-//        single<IHappyHourRepository>(named(REPOSITORY_OFFLINE_NAME)) {
-//            OfflineHappyHourRepository(get())
-//        }
+        single {
+            Room.databaseBuilder(
+                context = androidApplication(),
+                klass = HappyHourDatabase::class.java,
+                "happyhours.db",
+            ).build()
+        }
+
+        single {
+            get<HappyHourDatabase>().dao
+        }
 
         single<IHappyHourRepository>(named(REPOSITORY_ONLINE_NAME)) {
             OnlineHappyHourRepository(
                 api = get(),
-                cache = HappyHourVideoSearchCache()
+                searchCache = HappyHourVideoSearchCache(),
+                dao = get(),
             )
         }
 
