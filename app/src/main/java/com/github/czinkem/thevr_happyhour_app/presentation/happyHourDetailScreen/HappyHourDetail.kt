@@ -54,7 +54,7 @@ fun HappyHourDetail(
                         GlideImage(
                             modifier = Modifier,
                             imageModel = {
-                                ThumbnailProvider.thumbnailUrl(happyHour.videoId)
+                                ThumbnailProvider.provide(happyHour.videoId)
                             },
                             imageOptions = ImageOptions(
                                 contentScale = ContentScale.Fit,
