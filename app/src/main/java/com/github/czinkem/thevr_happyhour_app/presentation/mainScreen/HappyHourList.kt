@@ -42,19 +42,21 @@ fun HappyHourList(
                 .align(Alignment.Center)
                 .fillMaxSize()
         )
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-        ) {
-            items(happyHours) {
-                HappyHourCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 8.dp),
-                    happyHour = it,
-                    onCardClick = { onHappyHourCardClick(it) }
-                )
+        AnimatedVisibility(visible = happyHours.isNotEmpty()) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize(),
+            ) {
+                items(happyHours) {
+                    HappyHourCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 8.dp),
+                        happyHour = it,
+                        onCardClick = { onHappyHourCardClick(it) }
+                    )
+                }
             }
         }
         AnimatedVisibility(

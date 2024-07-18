@@ -55,24 +55,14 @@ fun MainScreenWrapper(
     viewModel: MainScreenViewModel = koinViewModel()
 ) {
     val happyHours by viewModel.displayedHappyHours.collectAsStateWithLifecycle()
-    val isHappyHoursLoading by viewModel.happyHoursLoading.collectAsStateWithLifecycle()
     val isHappyHoursListFiltered by viewModel.isHappyHoursFiltered.collectAsStateWithLifecycle()
-
-    LaunchedEffect(
-        key1 = Unit,
-        block = {
-            viewModel.loadHappyHours()
-//            viewModel.initHappyHours()
-//            viewModel.showAllHappyHour()
-        }
-    )
 
     MainScreen(
         modifier = modifier,
         windowSizeClass = windowSizeClass,
         onSettingsIconClick = {  },
         happyHours = happyHours,
-        isHappyHoursLoading = isHappyHoursLoading,
+        isHappyHoursLoading = false, // TODO
         onAnimationProgressChange = { isCompleted ->
             viewModel.onAnimationProgressChange(isCompleted)
         },

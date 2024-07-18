@@ -2,9 +2,9 @@ package com.github.czinkem.thevr_happyhour_app.di
 
 import androidx.room.Room
 import com.github.czinkem.thevr_happyhour_app.data.HappyHourVideoSearchCache
-import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.LocalDataCache
 import com.github.czinkem.thevr_happyhour_app.data.offline.HappyHourDatabase
+import com.github.czinkem.thevr_happyhour_app.data.offline.OfflineHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.online.HappyHourApi
 import com.github.czinkem.thevr_happyhour_app.data.online.HttpRoutes
 import com.github.czinkem.thevr_happyhour_app.data.online.OnlineHappyHourRepository
@@ -12,15 +12,11 @@ import com.github.czinkem.thevr_happyhour_app.presentation.happyHourDetailScreen
 import com.github.czinkem.thevr_happyhour_app.presentation.mainScreen.MainScreenViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object AppKoinModule {
-
-    const val REPOSITORY_OFFLINE_NAME = "offlineRepository"
-    const val REPOSITORY_ONLINE_NAME = "onlineRepository"
 
     val module = module {
 
@@ -40,15 +36,21 @@ object AppKoinModule {
             get<HappyHourDatabase>().dao
         }
 
-        single<IHappyHourRepository>(named(REPOSITORY_ONLINE_NAME)) {
-            OnlineHappyHourRepository(
-                api = get(),
-                searchCache = HappyHourVideoSearchCache(),
-                dao = get(),
+        single {
+            OfflineHappyHourRepository(
+                dao = get()
             )
         }
 
         single {
+            OnlineHappyHourRepository(
+                api = get(),
+                searchCache = HappyHourVideoSearchCache(),
+            )
+        }
+
+        single {
+            // TODO: Currently we don't handle if there is no internet connection so in these cases the app crashes
             Retrofit.Builder()
                 .baseUrl(HttpRoutes.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -61,7 +63,7 @@ object AppKoinModule {
         }
 
         viewModel {
-            MainScreenViewModel(get(named(REPOSITORY_ONLINE_NAME)))
+            MainScreenViewModel()
         }
 
         viewModel {

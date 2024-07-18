@@ -1,8 +1,6 @@
 package com.github.czinkem.thevr_happyhour_app.data.online
 
-import com.github.czinkem.thevr_happyhour_app.data.IHappyHourRepository
 import com.github.czinkem.thevr_happyhour_app.data.SearchCache
-import com.github.czinkem.thevr_happyhour_app.data.offline.HappyHourDao
 import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourDto
 import com.github.czinkem.thevr_happyhour_app.data.online.dto.HappyHourVideoDto
 import com.github.czinkem.thevr_happyhour_app.domain.mapper.toHappyHourList
@@ -16,12 +14,11 @@ import retrofit2.HttpException
 
 class OnlineHappyHourRepository(
     private val api: HappyHourApi,
-    private val searchCache: SearchCache<HappyHourVideoDto>,
-    private val dao: HappyHourDao,
-    ): IHappyHourRepository {
+    private val searchCache: SearchCache<HappyHourVideoDto>
+    ) {
     var happyHours = MutableStateFlow<List<HappyHourVideoDto>>(emptyList())
 
-    override fun happyHours(): Flow<List<HappyHour>> {
+    fun happyHours(): Flow<List<HappyHour>> {
         return happyHours.map { it.toHappyHourList() }
     }
 
@@ -44,7 +41,26 @@ class OnlineHappyHourRepository(
             throw HttpException(response)
         }
     }
-    override suspend fun loadAllHappyHour() {
+
+    fun loadHappyHoursUntilPartNumber(targetPartNumber: Int): List<HappyHourVideoDto> {
+        var targetPage = ""
+        var isMoreHappyHourAvailable = true
+        val hhList = mutableListOf<HappyHourVideoDto>()
+        while (isMoreHappyHourAvailable && targetPartNumber !in hhList.map { it.part }) {
+            val dto = loadPage(
+                targetPage = targetPage,
+            )
+            if(dto.hhVideos.isEmpty()) {
+                isMoreHappyHourAvailable = false
+            } else {
+                targetPage = dto.page.toString()
+                hhList.addAll(dto.hhVideos)
+            }
+        }
+        return hhList
+    }
+
+    fun loadAllHappyHour(): List<HappyHourVideoDto> {
         // TODO: empty stringtől ("","0","8",..) indul és mindig adunk hozzá 8-t
         var targetPage = "0"
         var isMoreHappyHourAvailable = true
@@ -65,6 +81,7 @@ class OnlineHappyHourRepository(
 //            *hhList.toDatabaseEntityList().toTypedArray()
 //        )
         happyHours.update { hhList }
+        return hhList
     }
 
     fun getHappyHourByFreeText(searchedString: String): List<HappyHourVideoDto> {
