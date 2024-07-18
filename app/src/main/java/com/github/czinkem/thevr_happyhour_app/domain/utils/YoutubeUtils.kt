@@ -7,6 +7,7 @@ import android.net.Uri
 
 
 fun Context.openYoutubeIntent(uri: String) {
+
     val youtubeIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
     try {
         this.startActivity(youtubeIntent)
@@ -14,3 +15,5 @@ fun Context.openYoutubeIntent(uri: String) {
         // TODO:
     }
 }
+
+const val YOUTUBE_BASE_URL = "https://www.youtube.com/watch"

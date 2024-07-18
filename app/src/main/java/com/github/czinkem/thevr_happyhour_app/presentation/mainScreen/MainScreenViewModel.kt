@@ -34,7 +34,11 @@ class MainScreenViewModel(
                     date = HappyHourDateFormatter.formatLocalDate(hh.date),
                     serialNumber = hh.serialNumber,
                     chapters = hh.chapters.map { chapter ->
-                        HappyHourChapterState(chapter.title,chapter.url)
+                        HappyHourChapterState(
+                            title = chapter.title,
+                            uri = chapter.uri,
+                            timeStamp =  chapter.timeStamp
+                        )
                     }
                 )
             }
@@ -101,7 +105,11 @@ class MainScreenViewModel(
                         date = HappyHourDateFormatter.formatLocalDate(hh.date),
                         serialNumber = hh.serialNumber,
                         chapters = hh.chapters.map { chapter ->
-                            HappyHourChapterState(chapter.title,chapter.url)
+                            HappyHourChapterState(
+                                title = chapter.title,
+                                uri = chapter.uri,
+                                timeStamp =  chapter.timeStamp
+                            )
                         }
                     )
                 })

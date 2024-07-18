@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.github.czinkem.thevr_happyhour_app.domain.state.HappyHourChapterState
-import com.github.czinkem.thevr_happyhour_app.domain.utils.TimestampProvider
 
 @Composable
 fun ChapterCard(
@@ -29,7 +28,7 @@ fun ChapterCard(
     Card(
         modifier = modifier,
         onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(chapterState.url))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(chapterState.uri))
             context.startActivity(intent)
         },
         shape = RoundedCornerShape(8.dp),
@@ -47,7 +46,7 @@ fun ChapterCard(
         ) {
             Text(
                 modifier = Modifier.weight(4f),
-                text = TimestampProvider.timestampString(chapterState.url)
+                text = chapterState.timeStamp
             )
             Text(
                 modifier = Modifier.weight(10f),
